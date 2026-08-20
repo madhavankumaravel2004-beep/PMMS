@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PMMS - Preventive Maintenance Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginPage" class="login-page">
+
+    <div class="login-card">
+
+        <div class="logo-box">
+            <div class="logo">PM</div>
+            <div>
+                <h1>PMMS</h1>
+                <p>Preventive Maintenance Management System</p>
+            </div>
+        </div>
+
+        <h2>Login</h2>
+
+        <label>Email / Username</label>
+        <input
+            type="text"
+            id="loginUser"
+            placeholder="Enter email or username"
+        >
+
+        <label>Password</label>
+
+        <div class="password-box">
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+            >
+
+            <button
+                type="button"
+                onclick="togglePassword('loginPassword')"
+                class="password-btn">
+                👁
+            </button>
+        </div>
+
+        <button class="primary-btn full-btn" onclick="login()">
+            Login
+        </button>
+
+        <button class="forgot-btn" onclick="showPasswordReset()">
+            Forgot Password?
+        </button>
+
+        <p id="loginMessage" class="message"></p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PASSWORD RESET ================= -->
+
+<div id="resetPage" class="login-page hidden">
+
+    <div class="login-card">
+
+        <h2>Password Reset</h2>
+
+        <p class="small-text">
+            Enter your registered company email.
+        </p>
+
+        <label>Company Email</label>
+
+        <input
+            type="email"
+            id="resetEmail"
+            placeholder="name@company.com"
+        >
+
+        <button class="primary-btn full-btn" onclick="resetPassword()">
+            Send Reset Request
+        </button>
+
+        <button class="forgot-btn" onclick="showLogin()">
+            ← Back to Login
+        </button>
+
+        <p id="resetMessage" class="message"></p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN APPLICATION ================= -->
+
+<div id="appPage" class="hidden">
+
+    <!-- HEADER -->
+
+    <header class="top-header">
+
+        <div class="brand">
+            <div class="brand-logo">PM</div>
+
+            <div>
+                <h2>PMMS</h2>
+                <span>Preventive Maintenance Management System</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+
+            <div class="user-info">
+                <strong id="currentUserName">User</strong>
+                <small id="currentUserRole">Role</small>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="navigation">
+
+        <button
+            class="nav-btn active"
+            onclick="showSection('dashboardSection', this)">
+            Dashboard
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('dailySection', this)">
+            Daily PM
+        </button>
+
+        <button
+            class="nav-btn admin-only"
+            onclick="showSection('approvalSection', this)">
+            Approval
+        </button>
+
+        <button
+            class="nav-btn admin-only"
+            onclick="showSection('recordsSection', this)">
+            Records
+        </button>
+
+        <button
+            class="nav-btn superadmin-only"
+            onclick="showSection('usersSection', this)">
+            Users
+        </button>
+
+    </nav>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <main>
+
+        <section id="dashboardSection" class="content-section">
+
+            <div class="page-title">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Preventive maintenance overview</p>
+                </div>
+
+                <div>
+                    <input
+                        type="date"
+                        id="dashboardDate"
+                        onchange="loadDashboard()"
+                    >
+                </div>
+            </div>
+
+
+            <div class="dashboard-cards">
+
+                <div class="dashboard-card">
+                    <span>Total Tasks</span>
+                    <strong id="totalTasks">0</strong>
+                </div>
+
+                <div class="dashboard-card normal">
+                    <span>No Issue</span>
+                    <strong id="normalTasks">0</strong>
+                </div>
+
+                <div class="dashboard-card minor">
+                    <span>Minor Issues</span>
+                    <strong id="minorTasks">0</strong>
+                </div>
+
+                <div class="dashboard-card major">
+                    <span>Major Issues</span>
+                    <strong id="majorTasks">0</strong>
+                </div>
+
+                <div class="dashboard-card pending">
+                    <span>Pending Approval</span>
+                    <strong id="pendingTasks">0</strong>
+                </div>
+
+                <div class="dashboard-card approved">
+                    <span>Approved</span>
+                    <strong id="approvedTasks">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-panel">
+
+                <h2>Today's Status</h2>
+
+                <div id="dashboardSummary">
+                    No report submitted.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= DAILY PM ================= -->
+
+        <section id="dailySection" class="content-section hidden">
+
+            <div class="page-title">
+
+                <div>
+                    <h1>Daily PM Report</h1>
+                    <p>Update preventive maintenance activities</p>
+                </div>
+
+                <div class="date-box">
+
+                    <label>Report Date</label>
+
+                    <input
+                        type="date"
+                        id="reportDate"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>Instructions:</strong>
+
+                <span>
+                    Select the appropriate status for each task.
+                    Remarks are mandatory only when an issue is reported.
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>S.No</th>
+
+                            <th>Machine / Equipment</th>
+
+                            <th>Component / Area</th>
+
+                            <th>PM Task</th>
+
+                            <th>Frequency</th>
+
+                            <th>Status</th>
+
+                            <th>Remarks</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="pmTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="submit-area">
+
+                <span id="dailyReportMessage"></span>
+
+                <button
+                    class="primary-btn"
+                    onclick="submitDailyReport()">
+                    Submit Daily Report
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= APPROVAL ================= -->
+
+        <section id="approvalSection" class="content-section hidden">
+
+            <div class="page-title">
+
+                <div>
+                    <h1>Admin Approval</h1>
+                    <p>Review supervisor daily reports</p>
+                </div>
+
+                <input
+                    type="date"
+                    id="approvalDate"
+                    onchange="loadApprovalData()"
+                >
+
+            </div>
+
+
+            <div class="approval-toolbar">
+
+                <div>
+
+                    <strong id="approvalSummary">
+                        No report selected.
+                    </strong>
+
+                </div>
+
+                <button
+                    class="approve-all-btn"
+                    onclick="approveAllNormal()">
+
+                    ✓ Approve All "No Issue"
+
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>S.No</th>
+
+                            <th>Machine</th>
+
+                            <th>Component</th>
+
+                            <th>Status</th>
+
+                            <th>Remarks</th>
+
+                            <th>Supervisor</th>
+
+                            <th>Approval</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="approvalTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RECORDS ================= -->
+
+        <section id="recordsSection" class="content-section hidden">
+
+            <div class="page-title">
+
+                <div>
+
+                    <h1>PM Records</h1>
+
+                    <p>Historical preventive maintenance reports</p>
+
+                </div>
+
+                <input
+                    type="date"
+                    id="recordsDate"
+                    onchange="loadRecords()"
+                >
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Date</th>
+
+                            <th>Machine</th>
+
+                            <th>Status</th>
+
+                            <th>Remarks</th>
+
+                            <th>Submitted By</th>
+
+                            <th>Approval</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recordsTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= USERS ================= -->
+
+        <section id="usersSection" class="content-section hidden">
+
+            <div class="page-title">
+
+                <div>
+
+                    <h1>User Management</h1>
+
+                    <p>Manage PMMS users</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="user-form">
+
+                <h3>Add User</h3>
+
+                <input
+                    type="text"
+                    id="newUserName"
+                    placeholder="Name"
+                >
+
+                <input
+                    type="email"
+                    id="newUserEmail"
+                    placeholder="Company Email"
+                >
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        id="newUserPassword"
+                        placeholder="Password"
+                    >
+
+                    <button
+                        type="button"
+                        class="password-btn"
+                        onclick="togglePassword('newUserPassword')">
+                        👁
+                    </button>
+
+                </div>
+
+                <select id="newUserRole">
+
+                    <option value="supervisor">
+                        Supervisor
+                    </option>
+
+                    <option value="admin">
+                        Admin
+                    </option>
+
+                    <option value="superadmin">
+                        Super Admin
+                    </option>
+
+                </select>
+
+                <button
+                    class="primary-btn"
+                    onclick="addUser()">
+                    Add User
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Role</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="usersTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
