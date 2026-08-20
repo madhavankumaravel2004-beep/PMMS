@@ -22,7 +22,7 @@ const DEFAULT_USERS = [
         id: 2,
         name: "Admin",
         email: "ashik.p@koushika.co.in",
-        password: "Ashik@9876",
+        password: "Ashik@987",
         role: "admin"
     },
     {
