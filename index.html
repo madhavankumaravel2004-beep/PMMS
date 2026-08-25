@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>PMMS - Preventive Maintenance Management System</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -15,214 +13,251 @@
 
 <div id="loginPage" class="login-page">
 
-    <div class="login-card">
+    <div class="login-box">
 
         <div class="logo-box">
-            <div class="logo">PM</div>
-            <div>
-                <h1>PMMS</h1>
-                <p>Preventive Maintenance Management System</p>
+            <div class="pmms-mark">PM</div>
+            <h1>PMMS</h1>
+            <p>Preventive Maintenance Management System</p>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label>Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    autocomplete="username"
+                    required
+                >
             </div>
-        </div>
 
-        <h2>Login</h2>
+            <div class="form-group">
+                <label>Password</label>
 
-        <label>Email / Username</label>
-        <input
-            type="text"
-            id="loginUser"
-            placeholder="Enter email or username"
-        >
+                <div class="password-box">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
 
-        <label>Password</label>
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="password-toggle"
+                    >
+                        Show
+                    </button>
+                </div>
+            </div>
 
-        <div class="password-box">
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Enter password"
-            >
-
-            <button
-                type="button"
-                onclick="togglePassword('loginPassword')"
-                class="password-btn">
-                👁
+            <button type="submit" class="login-btn">
+                Login
             </button>
+
+            <div id="loginError" class="login-error"></div>
+
+        </form>
+
+        <div class="login-help">
+            <small>Authorized users only</small>
         </div>
 
-        <button class="primary-btn full-btn" onclick="login()">
-            Login
-        </button>
-
-        <button class="forgot-btn" onclick="showPasswordReset()">
-            Forgot Password?
-        </button>
-
-        <p id="loginMessage" class="message"></p>
-
     </div>
-
 </div>
 
 
-<!-- ================= PASSWORD RESET ================= -->
+<!-- ================= APPLICATION ================= -->
 
-<div id="resetPage" class="login-page hidden">
+<div id="appPage" class="app-page hidden">
 
-    <div class="login-card">
+    <!-- SIDEBAR -->
 
-        <h2>Password Reset</h2>
+    <aside class="sidebar">
 
-        <p class="small-text">
-            Enter your registered company email.
-        </p>
-
-        <label>Company Email</label>
-
-        <input
-            type="email"
-            id="resetEmail"
-            placeholder="name@company.com"
-        >
-
-        <button class="primary-btn full-btn" onclick="resetPassword()">
-            Send Reset Request
-        </button>
-
-        <button class="forgot-btn" onclick="showLogin()">
-            ← Back to Login
-        </button>
-
-        <p id="resetMessage" class="message"></p>
-
-    </div>
-
-</div>
-
-
-<!-- ================= MAIN APPLICATION ================= -->
-
-<div id="appPage" class="hidden">
-
-    <!-- HEADER -->
-
-    <header class="top-header">
-
-        <div class="brand">
-            <div class="brand-logo">PM</div>
-
+        <div class="sidebar-header">
+            <div class="pmms-sidebar-mark">PM</div>
             <div>
                 <h2>PMMS</h2>
-                <span>Preventive Maintenance Management System</span>
+                <span>Preventive Maintenance</span>
             </div>
         </div>
 
-        <div class="header-right">
+        <nav>
 
-            <div class="user-info">
-                <strong id="currentUserName">User</strong>
-                <small id="currentUserRole">Role</small>
+            <button class="nav-btn active" data-page="dashboardPage">
+                <span>📊</span>
+                Dashboard
+            </button>
+
+            <button
+                class="nav-btn supervisor-only"
+                data-page="dailyPMPage"
+            >
+                <span>🛠️</span>
+                Daily PM
+            </button>
+
+            <button
+                class="nav-btn admin-only"
+                data-page="approvalPage"
+            >
+                <span>✅</span>
+                Approval
+            </button>
+
+            <button class="nav-btn" data-page="recordsPage">
+                <span>📋</span>
+                Records
+            </button>
+
+            <button class="nav-btn" data-page="reportsPage">
+                <span>📈</span>
+                Reports
+            </button>
+
+            <button
+                class="nav-btn superadmin-only"
+                data-page="usersPage"
+            >
+                <span>👥</span>
+                Users
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="logged-user">
+                <div class="user-icon">👤</div>
+
+                <div>
+                    <strong id="sideUserName">User</strong>
+                    <small id="sideUserRole">Role</small>
+                </div>
             </div>
 
-            <button class="logout-btn" onclick="logout()">
-                Logout
+            <button id="logoutBtn" class="logout-btn">
+                🚪 Logout
             </button>
 
         </div>
 
-    </header>
+    </aside>
 
 
-    <!-- NAVIGATION -->
+    <!-- MAIN -->
 
-    <nav class="navigation">
+    <main class="main-content">
 
-        <button
-            class="nav-btn active"
-            onclick="showSection('dashboardSection', this)">
-            Dashboard
-        </button>
+        <!-- TOP BAR -->
 
-        <button
-            class="nav-btn"
-            onclick="showSection('dailySection', this)">
-            Daily PM
-        </button>
+        <header class="topbar">
 
-        <button
-            class="nav-btn admin-only"
-            onclick="showSection('approvalSection', this)">
-            Approval
-        </button>
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <p id="pageSubtitle">
+                    Preventive Maintenance Overview
+                </p>
+            </div>
 
-        <button
-            class="nav-btn admin-only"
-            onclick="showSection('recordsSection', this)">
-            Records
-        </button>
+            <div class="top-user">
 
-        <button
-            class="nav-btn superadmin-only"
-            onclick="showSection('usersSection', this)">
-            Users
-        </button>
+                <span id="topUserName">User</span>
 
-    </nav>
+                <span
+                    id="topUserRole"
+                    class="role-badge"
+                >
+                    Role
+                </span>
+
+            </div>
+
+            <div class="theme-control">
+                <label for="themeSelect">Theme</label>
+                <select id="themeSelect" aria-label="Theme">
+                    <option value="light">☀ Light</option>
+                    <option value="dark">🌙 Dark</option>
+                    <option value="system">💻 System</option>
+                </select>
+            </div>
+
+        </header>
 
 
-    <!-- ================= DASHBOARD ================= -->
+        <!-- ================= DASHBOARD ================= -->
 
-    <main>
+        <section id="dashboardPage" class="page active-page">
 
-        <section id="dashboardSection" class="content-section">
-
-            <div class="page-title">
-                <div>
-                    <h1>Dashboard</h1>
-                    <p>Preventive maintenance overview</p>
-                </div>
+            <div class="dashboard-header">
 
                 <div>
-                    <input
-                        type="date"
-                        id="dashboardDate"
-                        onchange="loadDashboard()"
-                    >
+                    <h2>Maintenance Dashboard</h2>
+                    <p>Monitor preventive maintenance activities.</p>
                 </div>
+
+                <input
+                    type="date"
+                    id="dashboardDate"
+                >
+
             </div>
 
 
-            <div class="dashboard-cards">
+            <div class="stats-grid">
 
-                <div class="dashboard-card">
-                    <span>Total Tasks</span>
-                    <strong id="totalTasks">0</strong>
+                <div class="stat-card">
+                    <div class="stat-icon blue">📋</div>
+                    <div>
+                        <span>Total Tasks</span>
+                        <strong id="totalTasks">60</strong>
+                    </div>
                 </div>
 
-                <div class="dashboard-card normal">
-                    <span>No Issue</span>
-                    <strong id="normalTasks">0</strong>
+                <div class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <div>
+                        <span>No Issue</span>
+                        <strong id="noIssueCount">0</strong>
+                    </div>
                 </div>
 
-                <div class="dashboard-card minor">
-                    <span>Minor Issues</span>
-                    <strong id="minorTasks">0</strong>
+                <div class="stat-card">
+                    <div class="stat-icon yellow">!</div>
+                    <div>
+                        <span>Minor Issues</span>
+                        <strong id="minorCount">0</strong>
+                    </div>
                 </div>
 
-                <div class="dashboard-card major">
-                    <span>Major Issues</span>
-                    <strong id="majorTasks">0</strong>
+                <div class="stat-card">
+                    <div class="stat-icon red">⚠</div>
+                    <div>
+                        <span>Major Issues</span>
+                        <strong id="majorCount">0</strong>
+                    </div>
                 </div>
 
-                <div class="dashboard-card pending">
-                    <span>Pending Approval</span>
-                    <strong id="pendingTasks">0</strong>
+                <div class="stat-card">
+                    <div class="stat-icon orange">⏳</div>
+                    <div>
+                        <span>Pending Approval</span>
+                        <strong id="pendingCount">0</strong>
+                    </div>
                 </div>
 
-                <div class="dashboard-card approved">
-                    <span>Approved</span>
-                    <strong id="approvedTasks">0</strong>
+                <div class="stat-card">
+                    <div class="stat-icon purple">✓</div>
+                    <div>
+                        <span>Approved</span>
+                        <strong id="approvedCount">0</strong>
+                    </div>
                 </div>
 
             </div>
@@ -230,10 +265,68 @@
 
             <div class="dashboard-panel">
 
-                <h2>Today's Status</h2>
+                <div class="panel-header">
+                    <h3>Maintenance Summary</h3>
+                </div>
 
-                <div id="dashboardSummary">
-                    No report submitted.
+                <div class="summary-table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Count</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                    <span class="status-dot green-dot"></span>
+                                    No Issue
+                                </td>
+
+                                <td id="summaryNoIssue">0</td>
+                                <td id="summaryNoIssuePercent">0%</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="status-dot yellow-dot"></span>
+                                    Minor Issue
+                                </td>
+
+                                <td id="summaryMinor">0</td>
+                                <td id="summaryMinorPercent">0%</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="status-dot red-dot"></span>
+                                    Major Issue
+                                </td>
+
+                                <td id="summaryMajor">0</td>
+                                <td id="summaryMajorPercent">0%</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="status-dot gray-dot"></span>
+                                    Not Completed
+                                </td>
+
+                                <td id="summaryPending">60</td>
+                                <td id="summaryPendingPercent">100%</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
                 </div>
 
             </div>
@@ -243,83 +336,100 @@
 
         <!-- ================= DAILY PM ================= -->
 
-        <section id="dailySection" class="content-section hidden">
+        <section id="dailyPMPage" class="page">
 
-            <div class="page-title">
+            <div class="page-card">
 
-                <div>
-                    <h1>Daily PM Report</h1>
-                    <p>Update preventive maintenance activities</p>
+                <div class="page-card-header">
+
+                    <div>
+                        <h2>Daily Preventive Maintenance</h2>
+                        <p>
+                            Supervisor completes today's maintenance report.
+                        </p>
+                    </div>
+
+                    <div class="date-box">
+
+                        <label>Report Date</label>
+
+                        <input
+                            type="date"
+                            id="reportDate"
+                        >
+
+                    </div>
+
+                    <div class="sheet-status-box">
+                        <strong>Daily Sheet Limit</strong>
+                        <span>Max 2 sheets / day</span>
+                        <span id="sheetCountText">Submitted: 0 / 2</span>
+                    </div>
+
                 </div>
 
-                <div class="date-box">
 
-                    <label>Report Date</label>
+                <div class="info-message">
+                    <strong>Instructions:</strong>
+                    Select the maintenance status for each activity.
+                    Remarks are mandatory for Minor Issue and Major Issue.
+                </div>
 
-                    <input
-                        type="date"
-                        id="reportDate"
+
+                <div class="table-container">
+
+                    <table class="pm-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>No.</th>
+
+                                <th>Machine / Equipment</th>
+
+                                <th>Component</th>
+
+                                <th>Maintenance Activity</th>
+
+                                <th>Frequency</th>
+
+                                <th>Responsible</th>
+
+                                <th>Status</th>
+
+                                <th>Remarks</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="pmTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="savePMBtn"
+                        class="primary-btn"
                     >
+                        💾 Save PM Report
+                    </button>
+
+                    <button
+                        type="button"
+                        id="clearPMBtn"
+                        class="secondary-btn"
+                    >
+                        Clear
+                    </button>
 
                 </div>
-
-            </div>
-
-
-            <div class="info-box">
-
-                <strong>Instructions:</strong>
-
-                <span>
-                    Select the appropriate status for each task.
-                    Remarks are mandatory only when an issue is reported.
-                </span>
-
-            </div>
-
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>S.No</th>
-
-                            <th>Machine / Equipment</th>
-
-                            <th>Component / Area</th>
-
-                            <th>PM Task</th>
-
-                            <th>Frequency</th>
-
-                            <th>Status</th>
-
-                            <th>Remarks</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="pmTableBody"></tbody>
-
-                </table>
-
-            </div>
-
-
-            <div class="submit-area">
-
-                <span id="dailyReportMessage"></span>
-
-                <button
-                    class="primary-btn"
-                    onclick="submitDailyReport()">
-                    Submit Daily Report
-                </button>
 
             </div>
 
@@ -328,74 +438,62 @@
 
         <!-- ================= APPROVAL ================= -->
 
-        <section id="approvalSection" class="content-section hidden">
+        <section id="approvalPage" class="page">
 
-            <div class="page-title">
+            <div class="page-card">
 
-                <div>
-                    <h1>Admin Approval</h1>
-                    <p>Review supervisor daily reports</p>
-                </div>
+                <div class="page-card-header">
 
-                <input
-                    type="date"
-                    id="approvalDate"
-                    onchange="loadApprovalData()"
-                >
+                    <div>
+                        <h2>Admin Approval</h2>
+                        <p>Review and approve maintenance reports.</p>
+                    </div>
 
-            </div>
-
-
-            <div class="approval-toolbar">
-
-                <div>
-
-                    <strong id="approvalSummary">
-                        No report selected.
-                    </strong>
+                    <input
+                        type="date"
+                        id="approvalDate"
+                    >
 
                 </div>
 
-                <button
-                    class="approve-all-btn"
-                    onclick="approveAllNormal()">
 
-                    ✓ Approve All "No Issue"
+                <div class="approval-actions">
 
-                </button>
+                    <button
+                        id="approveAllBtn"
+                        class="approve-btn"
+                    >
+                        ✓ Approve All No Issue
+                    </button>
 
-            </div>
+                </div>
 
 
-            <div class="table-container">
+                <div class="table-container">
 
-                <table>
+                    <table class="records-table">
 
-                    <thead>
+                        <thead>
 
-                        <tr>
+                            <tr>
 
-                            <th>S.No</th>
+                                <th>Date</th>
+                                <th>Machine</th>
+                                <th>Activity</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th>Supervisor</th>
+                                <th>Approval</th>
 
-                            <th>Machine</th>
+                            </tr>
 
-                            <th>Component</th>
+                        </thead>
 
-                            <th>Status</th>
+                        <tbody id="approvalTableBody"></tbody>
 
-                            <th>Remarks</th>
+                    </table>
 
-                            <th>Supervisor</th>
-
-                            <th>Approval</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="approvalTableBody"></tbody>
-
-                </table>
+                </div>
 
             </div>
 
@@ -404,54 +502,185 @@
 
         <!-- ================= RECORDS ================= -->
 
-        <section id="recordsSection" class="content-section hidden">
+        <section id="recordsPage" class="page">
 
-            <div class="page-title">
+            <div class="page-card">
 
-                <div>
+                <div class="page-card-header">
 
-                    <h1>PM Records</h1>
+                    <div>
+                        <h2>Maintenance Records</h2>
+                        <p>View historical maintenance records.</p>
+                    </div>
 
-                    <p>Historical preventive maintenance reports</p>
+                    <button
+                        id="exportBtn"
+                        class="export-btn download-access"
+                    >
+                        📥 Download Excel
+                    </button>
 
                 </div>
 
-                <input
-                    type="date"
-                    id="recordsDate"
-                    onchange="loadRecords()"
-                >
+
+                <div class="filters">
+
+                    <div>
+                        <label>From Date</label>
+
+                        <input
+                            type="date"
+                            id="filterFrom"
+                        >
+                    </div>
+
+                    <div>
+                        <label>To Date</label>
+
+                        <input
+                            type="date"
+                            id="filterTo"
+                        >
+                    </div>
+
+                    <div>
+                        <label>Status</label>
+
+                        <select id="filterStatus">
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="No Issue">
+                                No Issue
+                            </option>
+
+                            <option value="Minor Issue">
+                                Minor Issue
+                            </option>
+
+                            <option value="Major Issue">
+                                Major Issue
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <button
+                        id="filterBtn"
+                        class="primary-btn"
+                    >
+                        Filter
+                    </button>
+
+                    <button
+                        id="resetFilterBtn"
+                        class="secondary-btn"
+                    >
+                        Reset
+                    </button>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table class="records-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Date</th>
+                                <th>No.</th>
+                                <th>Machine</th>
+                                <th>Component</th>
+                                <th>Activity</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th>Supervisor</th>
+                                <th>Approval</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="recordsTableBody"></tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
+        </section>
 
-            <div class="table-container">
 
-                <table>
+        <!-- ================= REPORT CENTER ================= -->
 
-                    <thead>
+        <section id="reportsPage" class="page">
 
-                        <tr>
+            <div class="page-card">
 
-                            <th>Date</th>
+                <div class="page-card-header">
+                    <div>
+                        <h2>Report Center</h2>
+                        <p>Separate Daily, Weekly, Monthly and Yearly reports with automatic schedule recognition.</p>
+                    </div>
 
-                            <th>Machine</th>
+                    <button id="reportExportBtn" class="export-btn download-access">
+                        📥 Download Report
+                    </button>
+                </div>
 
-                            <th>Status</th>
+                <div class="report-controls">
+                    <div>
+                        <label>Report Type</label>
+                        <select id="reportType">
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
 
-                            <th>Remarks</th>
+                    <div>
+                        <label>Anchor Date</label>
+                        <input type="date" id="reportAnchorDate">
+                    </div>
+                </div>
 
-                            <th>Submitted By</th>
+                <div id="automaticScheduleText" class="schedule-message"></div>
 
-                            <th>Approval</th>
+                <div class="stats-grid report-stats">
+                    <div class="stat-card"><div><span>Total Records</span><strong id="reportTotal">0</strong></div></div>
+                    <div class="stat-card"><div><span>Normal</span><strong id="reportNormal">0</strong></div></div>
+                    <div class="stat-card"><div><span>Minor</span><strong id="reportMinor">0</strong></div></div>
+                    <div class="stat-card"><div><span>Major</span><strong id="reportMajor">0</strong></div></div>
+                    <div class="stat-card"><div><span>Pending</span><strong id="reportPending">0</strong></div></div>
+                    <div class="stat-card"><div><span>Approved</span><strong id="reportApproved">0</strong></div></div>
+                </div>
 
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="recordsTableBody"></tbody>
-
-                </table>
+                <div class="table-container">
+                    <table class="records-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Sheet</th>
+                                <th>Machine</th>
+                                <th>Activity</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Approval</th>
+                                <th>Supervisor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody"></tbody>
+                    </table>
+                </div>
 
             </div>
 
@@ -460,102 +689,139 @@
 
         <!-- ================= USERS ================= -->
 
-        <section id="usersSection" class="content-section hidden">
+        <section id="usersPage" class="page">
 
-            <div class="page-title">
+            <div class="page-card">
 
-                <div>
+                <div class="page-card-header">
 
-                    <h1>User Management</h1>
-
-                    <p>Manage PMMS users</p>
+                    <div>
+                        <h2>User Management</h2>
+                        <p>
+                            Super Admin can add and remove users.
+                        </p>
+                    </div>
 
                 </div>
 
-            </div>
 
+                <div class="access-control-panel">
 
-            <div class="user-form">
+                    <div class="access-card">
+                        <div>
+                            <strong>Supervisor Download Access</strong>
+                            <p>Admin/Super Admin approval is required before a Supervisor can download data.</p>
+                        </div>
+                        <span id="downloadAccessState" class="access-state pending">Approval Required</span>
+                        <button id="supervisorDownloadApprovalBtn" class="approve-btn">
+                            Approve Supervisor Download
+                        </button>
+                    </div>
 
-                <h3>Add User</h3>
+                    <div class="access-card">
+                        <div>
+                            <strong>Extra Supervisor Sheet</strong>
+                            <p>After the normal 2 sheets/day, Super Admin can authorize another sheet.</p>
+                        </div>
 
-                <input
-                    type="text"
-                    id="newUserName"
-                    placeholder="Name"
-                >
+                        <select id="extraSheetSupervisor"></select>
+                        <input type="date" id="extraSheetDate">
+                        <button id="authorizeExtraSheetBtn" class="primary-btn">
+                            + Authorize Extra Sheet
+                        </button>
+                    </div>
 
-                <input
-                    type="email"
-                    id="newUserEmail"
-                    placeholder="Company Email"
-                >
+                </div>
 
-                <div class="password-box">
+                <div class="user-form">
 
-                    <input
-                        type="password"
-                        id="newUserPassword"
-                        placeholder="Password"
-                    >
+                    <div>
+                        <label>Full Name</label>
+
+                        <input
+                            type="text"
+                            id="newUserName"
+                            placeholder="Full name"
+                        >
+                    </div>
+
+                    <div>
+                        <label>Username</label>
+
+                        <input
+                            type="text"
+                            id="newUsername"
+                            placeholder="Username"
+                        >
+                    </div>
+
+                    <div>
+                        <label>Password</label>
+
+                        <input
+                            type="text"
+                            id="newPassword"
+                            placeholder="Password"
+                        >
+                    </div>
+
+                    <div>
+                        <label>Role</label>
+
+                        <select id="newUserRole">
+
+                            <option value="Supervisor">
+                                Supervisor
+                            </option>
+
+                            <option value="Admin">
+                                Admin
+                            </option>
+
+                            <option value="Quality">
+                                Quality
+                            </option>
+
+                            <option value="Super Admin">
+                                Super Admin
+                            </option>
+
+                        </select>
+
+                    </div>
 
                     <button
-                        type="button"
-                        class="password-btn"
-                        onclick="togglePassword('newUserPassword')">
-                        👁
+                        id="addUserBtn"
+                        class="primary-btn"
+                    >
+                        + Add User
                     </button>
 
                 </div>
 
-                <select id="newUserRole">
 
-                    <option value="supervisor">
-                        Supervisor
-                    </option>
+                <div class="table-container">
 
-                    <option value="admin">
-                        Admin
-                    </option>
+                    <table class="records-table">
 
-                    <option value="superadmin">
-                        Super Admin
-                    </option>
+                        <thead>
 
-                </select>
+                            <tr>
 
-                <button
-                    class="primary-btn"
-                    onclick="addUser()">
-                    Add User
-                </button>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Action</th>
 
-            </div>
+                            </tr>
 
+                        </thead>
 
-            <div class="table-container">
+                        <tbody id="usersTableBody"></tbody>
 
-                <table>
+                    </table>
 
-                    <thead>
-
-                        <tr>
-
-                            <th>Name</th>
-
-                            <th>Email</th>
-
-                            <th>Role</th>
-
-                            <th>Action</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="usersTableBody"></tbody>
-
-                </table>
+                </div>
 
             </div>
 
@@ -564,6 +830,11 @@
     </main>
 
 </div>
+
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast" class="toast"></div>
 
 
 <script src="app.js"></script>
